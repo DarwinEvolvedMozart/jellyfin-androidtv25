@@ -4,7 +4,7 @@
     <item android:state_selected="true" android:color="@color/nav_text_selected" />
     
     <!-- Focused state -->
-    <item android:state_focused="true" android:color="#E6FFFFFF" />
+    <item android:state_focused="true" android:color="?android:attr/colorAccent" />
     
     <!-- Default state -->
     <item android:color="#B3FFFFFF" />

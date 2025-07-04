@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
@@ -348,79 +349,69 @@ class HomeFragmentNetflixStyle : Fragment() {
         }
     }
     
-    private fun createNavTab(userView: BaseItemDto): TextView? {
+    private fun createNavTab(userView: BaseItemDto): View? {
         val displayName = getDisplayNameForCollectionType(userView.collectionType, userView.name)
         if (displayName == null) return null
         
-        return TextView(requireContext()).apply {
-            id = View.generateViewId()
-            layoutParams = ViewGroup.MarginLayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                resources.getDimensionPixelSize(R.dimen.toolbar_nav_button_height)
-            ).apply {
-                leftMargin = resources.getDimensionPixelSize(R.dimen.toolbar_nav_button_margin)
-            }
-            text = displayName
-            textSize = 15f
-            setTextColor(resources.getColorStateList(R.color.nav_text_color, null))
-            typeface = android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL)
-            gravity = android.view.Gravity.CENTER
-            setPadding(
-                resources.getDimensionPixelSize(R.dimen.toolbar_nav_button_padding_horizontal),
-                0,
-                resources.getDimensionPixelSize(R.dimen.toolbar_nav_button_padding_horizontal),
-                0
-            )
-            background = resources.getDrawable(R.drawable.nav_pill_animated_background, null)
-            stateListAnimator = android.animation.AnimatorInflater.loadStateListAnimator(
-                requireContext(),
-                R.animator.nav_button_state_animator
-            )
-            isFocusable = true
-            isClickable = true
-            
-            setOnClickListener {
-                navigateToSpecificLibrary(userView)
-            }
+        val navPillView = layoutInflater.inflate(R.layout.view_nav_pill_with_icon, null)
+        val iconView = navPillView.findViewById<ImageView>(R.id.nav_pill_icon)
+        val textView = navPillView.findViewById<TextView>(R.id.nav_pill_text)
+        
+        navPillView.id = View.generateViewId()
+        navPillView.layoutParams = ViewGroup.MarginLayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            resources.getDimensionPixelSize(R.dimen.toolbar_nav_button_height)
+        ).apply {
+            leftMargin = resources.getDimensionPixelSize(R.dimen.toolbar_nav_button_margin)
         }
+        
+        // Set the icon based on collection type
+        val iconRes = getIconForCollectionType(userView.collectionType)
+        if (iconRes != null) {
+            iconView.setImageResource(iconRes)
+            iconView.visibility = View.VISIBLE
+        } else {
+            iconView.visibility = View.GONE
+        }
+        
+        textView.text = displayName
+        
+        navPillView.setOnClickListener {
+            navigateToSpecificLibrary(userView)
+        }
+        
+        return navPillView
     }
     
-    private fun createJellyfinTab(): TextView {
-        return TextView(requireContext()).apply {
-            id = View.generateViewId()
-            layoutParams = ViewGroup.MarginLayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                resources.getDimensionPixelSize(R.dimen.toolbar_nav_button_height)
-            ).apply {
-                leftMargin = resources.getDimensionPixelSize(R.dimen.toolbar_nav_button_margin)
-            }
-            text = "Jellyfin"
-            textSize = 15f
-            setTextColor(resources.getColorStateList(R.color.nav_text_color, null))
-            typeface = android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL)
-            gravity = android.view.Gravity.CENTER
-            setPadding(
-                resources.getDimensionPixelSize(R.dimen.toolbar_nav_button_padding_horizontal),
-                0,
-                resources.getDimensionPixelSize(R.dimen.toolbar_nav_button_padding_horizontal),
-                0
-            )
-            background = resources.getDrawable(R.drawable.nav_pill_animated_background, null)
-            stateListAnimator = android.animation.AnimatorInflater.loadStateListAnimator(
-                requireContext(),
-                R.animator.nav_button_state_animator
-            )
-            isFocusable = true
-            isClickable = true
-            
-            setOnClickListener {
-                startActivity(ActivityDestinations.userPreferences(requireContext()))
-            }
+    private fun createJellyfinTab(): View {
+        val navPillView = layoutInflater.inflate(R.layout.view_nav_pill_with_icon, null)
+        val iconView = navPillView.findViewById<ImageView>(R.id.nav_pill_icon)
+        val textView = navPillView.findViewById<TextView>(R.id.nav_pill_text)
+        
+        navPillView.id = View.generateViewId()
+        navPillView.layoutParams = ViewGroup.MarginLayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            resources.getDimensionPixelSize(R.dimen.toolbar_nav_button_height)
+        ).apply {
+            leftMargin = resources.getDimensionPixelSize(R.dimen.toolbar_nav_button_margin)
         }
+        
+        // Set the Jellyfin icon
+        iconView.setImageResource(R.drawable.ic_jellyfin)
+        iconView.visibility = View.VISIBLE
+        
+        textView.text = "Jellyfin"
+        
+        navPillView.setOnClickListener {
+            startActivity(ActivityDestinations.userPreferences(requireContext()))
+        }
+        
+        return navPillView
     }
     
     private fun getDisplayNameForCollectionType(collectionType: CollectionType?, fallbackName: String?): String? {
-        return when (collectionType) {
+        // Always use the library's actual name instead of generic type names
+        return fallbackName ?: when (collectionType) {
             CollectionType.MOVIES -> "Movies"
             CollectionType.TVSHOWS -> "Shows"
             CollectionType.MUSIC -> "Music"
@@ -428,7 +419,20 @@ class HomeFragmentNetflixStyle : Fragment() {
             CollectionType.PLAYLISTS -> "Playlists"
             CollectionType.LIVETV -> "Live TV"
             CollectionType.BOXSETS -> "Collections"
-            else -> fallbackName // Use the library's custom name for unknown types
+            else -> "Library"
+        }
+    }
+    
+    private fun getIconForCollectionType(collectionType: CollectionType?): Int? {
+        return when (collectionType) {
+            CollectionType.MOVIES -> R.drawable.ic_movie
+            CollectionType.TVSHOWS -> R.drawable.ic_tv
+            CollectionType.MUSIC -> R.drawable.ic_music_album
+            CollectionType.PHOTOS -> R.drawable.ic_photo
+            CollectionType.PLAYLISTS -> R.drawable.ic_mix
+            CollectionType.LIVETV -> R.drawable.ic_tv_guide
+            CollectionType.BOXSETS -> R.drawable.ic_movie
+            else -> null
         }
     }
     
@@ -473,35 +477,39 @@ class HomeFragmentNetflixStyle : Fragment() {
         view.findViewById<View>(R.id.toolbar_user_avatar)?.nextFocusLeftId = jellyfinTab.id
     }
     
-    private fun createStaticTab(text: String, onClickListener: () -> Unit): TextView {
-        return TextView(requireContext()).apply {
-            id = View.generateViewId()
-            layoutParams = ViewGroup.MarginLayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                resources.getDimensionPixelSize(R.dimen.toolbar_nav_button_height)
-            ).apply {
-                leftMargin = resources.getDimensionPixelSize(R.dimen.toolbar_nav_button_margin)
-            }
-            this.text = text
-            textSize = 15f
-            setTextColor(resources.getColorStateList(R.color.nav_text_color, null))
-            typeface = android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL)
-            gravity = android.view.Gravity.CENTER
-            setPadding(
-                resources.getDimensionPixelSize(R.dimen.toolbar_nav_button_padding_horizontal),
-                0,
-                resources.getDimensionPixelSize(R.dimen.toolbar_nav_button_padding_horizontal),
-                0
-            )
-            background = resources.getDrawable(R.drawable.nav_pill_animated_background, null)
-            stateListAnimator = android.animation.AnimatorInflater.loadStateListAnimator(
-                requireContext(),
-                R.animator.nav_button_state_animator
-            )
-            isFocusable = true
-            isClickable = true
-            
-            setOnClickListener { onClickListener() }
+    private fun createStaticTab(text: String, onClickListener: () -> Unit): View {
+        val navPillView = layoutInflater.inflate(R.layout.view_nav_pill_with_icon, null)
+        val iconView = navPillView.findViewById<ImageView>(R.id.nav_pill_icon)
+        val textView = navPillView.findViewById<TextView>(R.id.nav_pill_text)
+        
+        navPillView.id = View.generateViewId()
+        navPillView.layoutParams = ViewGroup.MarginLayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            resources.getDimensionPixelSize(R.dimen.toolbar_nav_button_height)
+        ).apply {
+            leftMargin = resources.getDimensionPixelSize(R.dimen.toolbar_nav_button_margin)
         }
+        
+        // Set icon based on text
+        val iconRes = when (text) {
+            "Movies" -> R.drawable.ic_movie
+            "Shows" -> R.drawable.ic_tv
+            "Playlists" -> R.drawable.ic_mix
+            "Jellyfin" -> R.drawable.ic_jellyfin
+            else -> null
+        }
+        
+        if (iconRes != null) {
+            iconView.setImageResource(iconRes)
+            iconView.visibility = View.VISIBLE
+        } else {
+            iconView.visibility = View.GONE
+        }
+        
+        textView.text = text
+        
+        navPillView.setOnClickListener { onClickListener() }
+        
+        return navPillView
     }
 }

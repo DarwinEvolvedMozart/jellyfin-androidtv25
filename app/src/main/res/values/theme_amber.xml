@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="theme_amber_primary">#E5A00D</color>
+    <color name="theme_amber_secondary">#FAA61A</color>
+    <color name="theme_amber_dark">#2D2D2D</color>
+    <color name="theme_amber_darker">#1F1F1F</color>
+    <color name="theme_amber_light">#FFB74D</color>
+    <color name="theme_amber_accent">#FF9800</color>
+
+    <style name="Theme.Jellyfin.Amber" parent="Theme.Jellyfin">
+        <!-- Colors -->
+        <item name="android:colorPrimary">@color/theme_amber_dark</item>
+        <item name="android:colorPrimaryDark">@color/theme_amber_darker</item>
+        <item name="android:colorAccent">@color/theme_amber_primary</item>
+        <item name="defaultBackground">@color/theme_amber_darker</item>
+        <item name="defaultSearchColor">@color/theme_amber_primary</item>
+        <item name="progressPrimary">@color/theme_amber_primary</item>
+        <item name="progressSecondary">@color/theme_amber_secondary</item>
+        <item name="popupMenuBackground">@color/theme_amber_dark</item>
+
+        <!-- Button colors -->
+        <item name="android:colorButtonNormal">@color/theme_amber_dark</item>
+        <item name="buttonDefaultNormalBackground">@color/theme_amber_dark</item>
+        <item name="buttonDefaultHighlightBackground">@color/theme_amber_primary</item>
+
+        <!-- Control icons -->
+        <item name="controlIconBackground">@color/theme_amber_dark</item>
+        <item name="controlIconForegroundActive">@color/theme_amber_primary</item>
+        <item name="controlIconForegroundInactive">@color/theme_amber_secondary</item>
+
+        <!-- QR drawables -->
+        <item name="qrForeground">@color/theme_amber_primary</item>
+
+        <!-- Tile colors - using amber variants for different content types -->
+        <item name="tile_search_bg">@color/theme_amber_primary</item>
+        <item name="tile_suggestions_bg">@color/theme_amber_primary</item>
+        <item name="tile_actors_bg">@color/theme_amber_primary</item>
+        <item name="tile_artists_bg">@color/theme_amber_primary</item>
+        <item name="tile_audio_bg">@color/theme_amber_primary</item>
+        <item name="tile_chapter_bg">@color/theme_amber_primary</item>
+        <item name="tile_genres_bg">@color/theme_amber_primary</item>
+        <item name="tile_letters_bg">@color/theme_amber_primary</item>
+        <item name="tile_land_folder_bg">@color/theme_amber_primary</item>
+        <item name="tile_land_photo_bg">@color/theme_amber_primary</item>
+        <item name="tile_land_series_timer_bg">@color/theme_amber_primary</item>
+        <item name="tile_land_tv_bg">@color/theme_amber_primary</item>
+        <item name="tile_port_time_bg">@color/theme_amber_primary</item>
+        <item name="tile_port_tv_bg">@color/theme_amber_primary</item>
+        <item name="tile_port_video_bg">@color/theme_amber_primary</item>
+        <item name="tile_port_folder_bg">@color/theme_amber_primary</item>
+        <item name="tile_port_grid_bg">@color/theme_amber_primary</item>
+        <item name="tile_port_guide_bg">@color/theme_amber_primary</item>
+        <item name="tile_port_person_bg">@color/theme_amber_primary</item>
+        <item name="tile_port_series_timer_bg">@color/theme_amber_primary</item>
+    </style>
+</resources> 

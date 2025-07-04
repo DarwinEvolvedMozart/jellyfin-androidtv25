@@ -12,7 +12,7 @@
             android:layout_gravity="center_vertical|end"
             android:layout_toStartOf="@id/toolbar_actions"
             android:textSize="14sp"
-            android:textColor="#E5E5E5"
+            android:textColor="?android:attr/textColorPrimary"
             android:textAllCaps="true"
             android:letterSpacing="0.1"
             android:fontFamily="sans-serif-medium" />

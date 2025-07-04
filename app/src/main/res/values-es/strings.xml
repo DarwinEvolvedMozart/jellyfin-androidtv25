@@ -304,6 +304,7 @@
     <string name="lbl_manage_servers">Gestionar servidores</string>
     <string name="no_network_permissions">Jellyfin necesita permisos de red para funcionar</string>
     <string name="pref_theme_muted_purple">Morado silenciado</string>
+    <string name="pref_theme_amber">Ámbar</string>
     <string name="lbl_switch_user">Cambiar de cuenta</string>
     <string name="user_picker_last_user_summary">Usar la última cuenta activa</string>
     <string name="user_picker_last_user_title">Usado más recientemente</string>

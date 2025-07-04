@@ -38,7 +38,7 @@
                 android:layout_height="20dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_search"
-                android:tint="@color/toolbar_icon_tint"
+                android:tint="?android:attr/colorAccent"
                 android:scaleType="centerInside"
                 android:contentDescription="Search" />
         </FrameLayout>
